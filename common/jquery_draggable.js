@@ -1,6 +1,5 @@
 /**
  * @author css-tricks.com
- *
  */
 
 
