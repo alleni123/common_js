@@ -6,26 +6,37 @@
        
 
         <title>top_test</title>
-        <link rel="stylesheet" type="text/css" href="top.js" />
+        <link rel="stylesheet" type="text/css" href="top_zoom.css" />
+        <style type="text/css">
+               * {
+                margin: 0;
+                padding: 0;
+                font-size: 12px;
+            }
+
+            a {
+                text-decoration: none;
+            }
+            
+        </style>
+        
         <script type="text/javascript" src="jquery-1.9.0.js"></script>
-        <script type="text/javascript" src="top.js"></script>
+        <script type="text/javascript" src="top_zoom.js"></script>
+       
         <script type="text/javascript">
 			$(function() {
-			    $("#appendParent").addImgzoom();
+			    
+			    // $(".click_img").click(function(){
+			        // $(this).imgzoom({
+                    // imgSelector:".click_img",
+                    // imgSrc:$(this).attr("src"),
+                // });
+			    // });
 			    
 			    
-				$("#click_img").click(function() {
-					if ($("#_cover").css("display") == "none") {
-						//alert("== ");
-						$("#_cover").show();
-					} else {
-						//alert("show");
-						$("#appendParent").showCover();
-					}
-
-					$("#imgzoom").show();
-					return false;
-				});
+		     $("#appendParent").imgzoom({imgSelector:".click_img"});
+			   
+			 
 			});
         </script>
 
@@ -38,8 +49,9 @@
         <div style="width:1000px; height:1000px">
             <div>
 
-                <img src="roll-02.jpg" id="click_img" width="200px" height="200px"/>
-
+                <img src="roll-02.jpg" class="click_img" id="click_img" width="200px" height="200px"/>
+            <img src="roll-03.jpg"  class="click_img" id="click_img2" width="200px" height="200px"/>
+    
             </div>
 
         </div>
