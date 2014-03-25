@@ -10,10 +10,10 @@
 		},opts||{});
 		
 		var selector=$(this).selector;
-	
+		
 		$(setting.imgSelector).click(function(e) {
-				console.log(e.target.src);
-				$("#appendParent").addImgzoom({imgSrc:e.target.src,zoomParent:selector});
+				console.log($(this).attr("src"));
+				$("#appendParent").addImgzoom({imgSrc:$(this).attr("src"),zoomParent:selector});
 			
 			if ($("#_cover").css("display") == "none") {
 				//alert("== ");
@@ -37,7 +37,7 @@
 		},opts||{});
 		//alert("src= "+setting.imgSrc);
 		$("body").click(function(e) {
-			console.log(e.target);
+			console.log("bodyclick"+e.target+"1");
 			if ($(e.target).hasClass('imgclose')) {
 
 				//$("#_cover").hide();
@@ -46,11 +46,12 @@
 				$("#imgzoom").remove();
 			}
 
-			if ($(e.target).hasClass('imgzoom_content')) {
-				return false;
-			}
+			// if ($(e.target).hasClass('imgzoom_content')) {
+				// alert(1);
+				// return false;
+			// }
 
-			if ($("#_cover").css("display") == "block") {
+			if (($("#_cover").css("display") == "block")&&!($(e.target).hasClass('imgzoom_content'))) {
 
 				//$("#_cover").hide();
 				//$("#imgzoom").hide();
@@ -93,7 +94,7 @@
 		a_ori_img.className = "imglink imgzoom_btn imgzoom_content";
 		a_ori_img.target = "_blank";
 		a_ori_img.title = "查看大图";
-		a_ori_img.href = setting.imgPath;
+		a_ori_img.href = setting.imgSrc;
 		var txt = document.createTextNode("查看大图");
 		a_ori_img.appendChild(txt);
 
