@@ -9,8 +9,12 @@
 			imgSrc:""
 		},opts||{});
 		
-		$(this).addImgzoom({imgSrc:setting.imgSrc}) ;
-		$(setting.imgSelector).click(function() {
+		var selector=$(this).selector;
+	
+		$(setting.imgSelector).click(function(e) {
+				console.log(e.target.src);
+				$("#appendParent").addImgzoom({imgSrc:e.target.src,zoomParent:selector});
+			
 			if ($("#_cover").css("display") == "none") {
 				//alert("== ");
 				$("#_cover").show();
@@ -28,9 +32,10 @@
 
 		var setting=$.extend({
 			imgPath:"#123",
-			imgSrc:""
+			imgSrc:"",
+			zoomParent:"#appendParent"
 		},opts||{});
-		alert("src= "+setting.imgSrc);
+		//alert("src= "+setting.imgSrc);
 		$("body").click(function(e) {
 			console.log(e.target);
 			if ($(e.target).hasClass('imgclose')) {
@@ -58,7 +63,12 @@
 		imgzoom.style.top = "100px";
 		imgzoom.style.left = "500px";
 		imgzoom.style.display = "none";
-		$(this).append(imgzoom);
+		
+		
+		//这里是添加imgzoom div的地方。
+		//alert(setting.zoomParent);
+		//$("#appendParent").append(imgzoom);
+		$(setting.zoomParent).append(imgzoom);
 
 		var zoomlayer = document.createElement("div");
 		zoomlayer.id = "imgzoom_zoomlayer";
