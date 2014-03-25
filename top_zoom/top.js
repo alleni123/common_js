@@ -1,36 +1,11 @@
 (function($) {
 
-	$.fn.imgzoom = function(opts) {
-		
-		
-		
-		var setting=$.extend({
-			imgSelector:"#click_img",
-			imgSrc:""
-		},opts||{});
-		
-		$(this).addImgzoom({imgSrc:setting.imgSrc}) ;
-		$(setting.imgSelector).click(function() {
-			if ($("#_cover").css("display") == "none") {
-				//alert("== ");
-				$("#_cover").show();
-			} else {
-				//alert("show");
-				$("#appendParent").showCover();
-			}
-				
-			$("#imgzoom").show();
-			return false;
-		});
-	};
+	$.fn.addImgzoom = function(opt) {
 
-	$.fn.addImgzoom = function(opts) {
+		opt = $.extend({
 
-		var setting=$.extend({
-			imgPath:"#123",
-			imgSrc:""
-		},opts||{});
-		alert("src= "+setting.imgSrc);
+		}, opt);
+
 		$("body").click(function(e) {
 			console.log(e.target);
 			if ($(e.target).hasClass('imgclose')) {
@@ -79,7 +54,7 @@
 		a_ori_img.className = "imglink imgzoom_btn imgzoom_content";
 		a_ori_img.target = "_blank";
 		a_ori_img.title = "查看大图";
-		a_ori_img.href = setting.imgPath;
+		a_ori_img.href = "#";
 		var txt = document.createTextNode("查看大图");
 		a_ori_img.appendChild(txt);
 
@@ -100,10 +75,8 @@
 
 		var img = document.createElement("img");
 		img.id = "imgzoom_zoom";
-		//img.src = "roll-02.jpg";
-		img.src=setting.imgSrc;
+		img.src = "roll-02.jpg";
 		img.style.width = "480px";
-		img.className="imgzoom_content";
 		imgDiv.appendChild(img);
 
 		var img_title = document.createElement("div");
