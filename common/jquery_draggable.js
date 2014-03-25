@@ -42,7 +42,7 @@
                          //这里由于是$drag.parent().on(xxx), 因此实际上是当鼠标在被选中的图片的父节点中移动的时候，才有效果。
                          //但其实parent()也包含了里面所有的节点。
                          //比如高度为200px的body，里面有一个高度为500px的div,那么我们把图片在500px范围内快速移动，也不会丢失图片。
-						$drag.css("z-index", 1000).parent().on("mousemove", function(e) {
+						$drag.css("z-index", 1000).parents().on("mousemove", function(e) {
 						    console.log(e.pageX);
 							$(".draggable").offset({
 						       //2. e.pageY也就是鼠标移动到的地方距离浏览器顶部的距离。 
