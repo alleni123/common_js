@@ -20,7 +20,7 @@
 				$("#_cover").show();
 			} else {
 				//alert("show");
-				$("#appendParent").showCover();
+				$("#appendParent").addCover();
 			}
 				
 			$("#imgzoom").show();
@@ -40,8 +40,10 @@
 			console.log(e.target);
 			if ($(e.target).hasClass('imgclose')) {
 
-				$("#_cover").hide();
-				$("#imgzoom").hide();
+				//$("#_cover").hide();
+				//$("#imgzoom").hide();
+				$("#_cover").remove();
+				$("#imgzoom").remove();
 			}
 
 			if ($(e.target).hasClass('imgzoom_content')) {
@@ -50,8 +52,10 @@
 
 			if ($("#_cover").css("display") == "block") {
 
-				$("#_cover").hide();
-				$("#imgzoom").hide();
+				//$("#_cover").hide();
+				//$("#imgzoom").hide();
+				$("#_cover").remove();
+				$("#imgzoom").remove();
 			}
 		});
 
@@ -123,7 +127,7 @@
 
 	};
 
-	$.fn.showCover = function(opt) {
+	$.fn.addCover = function(opt) {
 		opt = $.extend({
 
 		}, opt);
