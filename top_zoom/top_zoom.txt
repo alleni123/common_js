@@ -1,0 +1,9 @@
+	//http://stackoverflow.com/questions/318630/get-real-image-width-and-height-with-javascript-in-safari-chrome
+			// 这里程序会最后执行load里面的代码，
+			// 因此不能用 var img_real_width, img_real_height;
+			var img_real_width, img_real_height;
+			$("<img/>")//Make in memory copy of image to avoid css issues
+			.attr("src", $(this).attr("src")).load(function() {
+				img_real_width = this.width;
+				img_real_height = this.height;
+			});

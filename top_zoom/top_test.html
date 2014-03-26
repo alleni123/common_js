@@ -3,12 +3,10 @@
     <head>
         <meta charset="utf-8">
 
-       
-
         <title>top_test</title>
         <link rel="stylesheet" type="text/css" href="top_zoom.css" />
         <style type="text/css">
-               * {
+            * {
                 margin: 0;
                 padding: 0;
                 font-size: 12px;
@@ -17,41 +15,71 @@
             a {
                 text-decoration: none;
             }
-            
+
         </style>
-        
+
         <script type="text/javascript" src="jquery-1.9.0.js"></script>
         <script type="text/javascript" src="top_zoom.js"></script>
-       
+        <script type="text/javascript" src="jquery_draggable.js"></script>
+
         <script type="text/javascript">
 			$(function() {
-			    
-			    // $(".click_img").click(function(){
-			        // $(this).imgzoom({
-                    // imgSelector:".click_img",
-                    // imgSrc:$(this).attr("src"),
-                // });
-			    // });
-			    
-			    
-		     $("#appendParent").imgzoom({imgSelector:".click_img"});
-			   
-			 
+
+				// $(".click_img").click(function(){
+				// $(this).imgzoom({
+				// imgSelector:".click_img",
+				// imgSrc:$(this).attr("src"),
+				// });
+				// });
+                
+                // var imgs=$(".click_img");
+                // console.log(imgs);
+                
+                
+				$("#appendParent").imgzoom({
+					imgSelector : ".click_img"
+				});
+                
+                
+				// var img = document.getElementById("click_img");
+				// if(img.complete){
+				// console.log("natual="+img.naturalHeight);};
+				
+				
+				
+				 var img2=$("#click_img");
+				 img2.on("load",function(){
+				     console.log("natua2="+img2.naturalHeight);
+				 });
+				
+				
+				// var img_real_width, img_real_height;
+				// $("<img/>").attr("src", $(img).attr("src")).one("load", function() {
+					// var img = this;
+					// setTimeout(function() {
+						// img_real_width = this.width;
+						// img_real_height = this.height;
+					// },0);
+// 
+				// });
+				// console.log("height=" + img_real_height);
+				//undefined
+
 			});
         </script>
 
     </head>
 
     <body>
-        
+        <!--写一个appendParent div， 用于放置背景和显示图片的div-->
         <div id="appendParent"></div>
-        
+
         <div style="width:1000px; height:1000px">
             <div>
 
-                <img src="roll-02.jpg" class="click_img" id="click_img" width="200px" height="200px"/>
-            <img src="roll-03.jpg"  class="click_img" id="click_img2" width="200px" height="200px"/>
-    
+                <img src="roll-02.jpg" class="click_img" id="click_img" width="200px" height="200px" w="765" h="785"/>
+                <img src="roll-03.jpg"  class="click_img" id="click_img2" width="200px" height="200px"/>
+
             </div>
 
         </div>

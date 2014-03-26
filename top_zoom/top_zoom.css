@@ -17,6 +17,26 @@
     margin-left: 9px;
 }
 
+.img_prev, .img_next{
+    width:80px;
+    position:absolute;
+    cursor:pointer;
+    margin-top:18px;
+}
+
+.img_prev{
+      background: url(pic-prev.png) no-repeat 0 100px;
+}
+
+.img_next{
+    background: url(pic-next.png) no-repeat 15px 100px;
+    right:10px;
+}
+
+.img_prev span, .img_next span{
+    margin-top:20px;
+}
+
 .y {
     float: right;
 }
