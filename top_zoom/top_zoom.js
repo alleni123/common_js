@@ -4,41 +4,78 @@
 
 		var setting = $.extend({
 			imgSelector : "#click_img",
-			imgSrc : "",
-			next:".img_next"
+			imgSrc : "", //显示在前面的图片src
+			next : ".img_next",
+			img_page:".img_page", //上一页和下一页点击区域的class
+			nextImgSrc : "", //下一页图片src
+			prevImgSrc : "", //上一页图片src
+			$imgs:null,   //$(".click_img")
+			index_current:"",     // imgs中的index值  setting.imgs.index($(this))
+			index_next:"",
+			index_prev:"",
+			first_img:false, //测试代码， 用于分辨是否是第一个图片和最后一个图片
+			last_img:false
 		}, opts || {});
 
 		var selector = $(this).selector;
-		
-		$(setting.next).click(function(){
-			alert("next");
-		});
-		
-		
-		
+		console.log($(this));
 
-		$(setting.imgSelector).click(function(e) {
+		$(document).on("click", setting.img_page, page);
 
-			//console.log($(this).attr("src"));
-			console.log($(this).attr("src").width);
-			console.log($(this).attr("w"));
-
+		$(setting.imgSelector).on("click", initZoom);
+		function initZoom(e) {
+			console.log($(".click_img"));
+			var $imgs=$(".click_img");
+			 
+			setting.$imgs=$imgs;
+			console.log($(this).next());
+			
+		//	alert(setting.$imgs.index($(this)));
+		//	alert(setting.$imgs.index($(this).next()));
+			console.log($(this).prev().attr("src"));
+			console.log($(this).next().attr("src"));
+			setting.imgSrc=$(this).attr("src");
+			setting.nextImgSrc = $(this).next().attr("src");
+			setting.prevImgSrc = $(this).prev().attr("src");
+			setting.index_current=setting.$imgs.index($(this));
+			setting.index_next=setting.index_current+1;
+			setting.index_prev=setting.index_current-1;
+			
+		//	alert(setting.index_next);//这个有值。
+			
+		//	alert($imgs[setting.index_next]==null);//这个是true
+			
+			if($imgs[setting.index_next]==null){
+				setting.nextImgSrc=null;
+				setting.prevImgSrc=$imgs[setting.index_prev].src;
+			}
+			if($imgs[setting.index_prev]==null){
+				setting.prevImgSrc=null;
+				setting.nextImgSrc=$imgs[setting.index_next].src;
+			}
+			
+			
+			//console.log($imgs[setting.index_next]);//获取img
+		//	console.log($imgs[setting.index_next].src);
+			
+			//setting.nextImgSrc=$imgs[setting.index_next].src;
+			//setting.prevImgSrc=$imgs[setting.index_prev].src;		
+			//console.log(111);
+			
+			
 			var imgs = $(".click_img");
-			console.log(imgs);
 
-		
-
+			//加入图片层
 			$("#appendParent").addImgzoom({
 				imgSrc : $(this).attr("src"),
 				zoomParent : selector,
 				imgWidth : $(this).attr("w"),
-				imgHeight : $(this).attr("h")
+				imgHeight : $(this).attr("h"),
+				nextImgSrc : $(this).next().attr("src"),
+				prevImgSrc : $(this).prev().attr("src")
 			});
 			$("#imgzoom").drags();
-			
-			
-			
-			
+
 			if ($("#_cover").css("display") == "none") {
 				//alert("== ");
 				$("#_cover").show();
@@ -49,40 +86,43 @@
 
 			$("#imgzoom").show();
 			return false;
-		});
-		
-		
-		
-		
-		
-		$(setting.next).on("click",function(){
-			alert("next");
-		});
-	};
+		};
 
-	$.fn.addImgzoom = function(opts) {
+		function page(e) {
+			if (($(e.target).hasClass("img_next"))) {
+				//$("#imgzoom_zoom").attr("src", setting.nextImgSrc);
+				$("#imgzoom_zoom").attr("src",setting.nextImgSrc);
+				setting.prevImgSrc=setting.imgSrc;
+				setting.index_next=setting.index_next+1;
+				setting.index_prev=setting.index_current;
+			 
+			}
+			 
+			if (($(e.target).hasClass("img_prev"))) {
+				$("#imgzoom_zoom").attr("src",setting.prevImgSrc);
+				setting.prevImgSrc=setting.imgSrc;
+				setting.index_next=setting.index_current;
+				setting.index_prev=setting.index_prev+1;
+			}
 
-		var setting = $.extend({
-			imgPath : "#123",
-			imgSrc : "",
-			imgWidth : "",
-			imgHeight : "",
-			zoomParent : "#appendParent"
-		}, opts || {});
-		//alert("src= "+setting.imgSrc);
+		};
+
+		//如果点击了图片区域以外， 就会去掉图片显示。
 		$("body").click(function(e) {
 			console.log("bodyclick" + e.target + "1");
 			
-			if($(e.target).hasClass('img_next')){
-				alert("next");
+			//如果是分页操作，不执行其它代码。
+			if ($(e.target).hasClass("img_page")) {
 				e.preventDefault();
+				return;
+				//这里写成return false的话会导致$(document).on绑定的事件失效。
 			}
-			
+
 			if ($(e.target).hasClass('imgclose')) {
 
 				//$("#_cover").hide();
 				//$("#imgzoom").hide();
-				
+
 				$("#_cover").remove();
 				$("#imgzoom").remove();
 				e.preventDefault();
@@ -101,7 +141,21 @@
 				$("#imgzoom").remove();
 				e.preventDefault();
 			}
+			e.preventDefault();
 		});
+
+	};
+
+	$.fn.addImgzoom = function(opts) {
+
+		var setting = $.extend({
+			imgPath : "#123",
+			imgSrc : "",
+			imgWidth : "",
+			imgHeight : "",
+			zoomParent : "#appendParent"
+		}, opts || {});
+		//alert("src= "+setting.imgSrc);
 
 		var imgzoom = document.createElement("div");
 		imgzoom.id = "imgzoom";
@@ -154,12 +208,12 @@
 		var img_pager = document.createElement("div");
 		zoomlayer.appendChild(img_pager);
 		var img_prev = document.createElement("div");
-		img_prev.className = "img_prev";
+		img_prev.className = "img_prev img_page";
 		//alert("prev="+setting.imgHeight);
 		img_prev.style.height = setting.imgHeight + "px";
 
 		var img_next = document.createElement("div");
-		img_next.className = "img_next";
+		img_next.className = "img_next img_page";
 		img_next.style.height = setting.imgHeight + "px";
 
 		zoomlayer.appendChild(img_prev);
