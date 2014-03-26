@@ -6,15 +6,16 @@
 			imgSelector : "#click_img",
 			imgSrc : "", //显示在前面的图片src
 			next : ".img_next",
-			img_page:".img_page", //上一页和下一页点击区域的class
+			img_page : ".img_page", //上一页和下一页点击区域的class
 			nextImgSrc : "", //下一页图片src
 			prevImgSrc : "", //上一页图片src
-			$imgs:null,   //$(".click_img")
-			index_current:"",     // imgs中的index值  setting.imgs.index($(this))
-			index_next:"",
-			index_prev:"",
-			first_img:false, //测试代码， 用于分辨是否是第一个图片和最后一个图片
-			last_img:false
+			$imgs : null, //$(".click_img")
+			index_current : "", // imgs中的index值  setting.imgs.index($(this))
+			index_next : "",
+			index_prev : "",
+			first_img : false, //测试代码， 用于分辨是否是第一个图片和最后一个图片
+			last_img : false,
+			img_num : "" //图片总数
 		}, opts || {});
 
 		var selector = $(this).selector;
@@ -25,44 +26,50 @@
 		$(setting.imgSelector).on("click", initZoom);
 		function initZoom(e) {
 			console.log($(".click_img"));
-			var $imgs=$(".click_img");
-			 
-			setting.$imgs=$imgs;
+			var $imgs = $(".click_img");
+
+			setting.$imgs = $imgs;
+			setting.img_num = $imgs.length;
+
 			console.log($(this).next());
-			
-		//	alert(setting.$imgs.index($(this)));
-		//	alert(setting.$imgs.index($(this).next()));
+
+			//	alert(setting.$imgs.index($(this)));
+			//	alert(setting.$imgs.index($(this).next()));
 			console.log($(this).prev().attr("src"));
 			console.log($(this).next().attr("src"));
-			setting.imgSrc=$(this).attr("src");
+			setting.imgSrc = $(this).attr("src");
 			setting.nextImgSrc = $(this).next().attr("src");
 			setting.prevImgSrc = $(this).prev().attr("src");
-			setting.index_current=setting.$imgs.index($(this));
-			setting.index_next=setting.index_current+1;
-			setting.index_prev=setting.index_current-1;
-			
-		//	alert(setting.index_next);//这个有值。
-			
-		//	alert($imgs[setting.index_next]==null);//这个是true
-			
-			if($imgs[setting.index_next]==null){
-				setting.nextImgSrc=null;
-				setting.prevImgSrc=$imgs[setting.index_prev].src;
+			setting.index_current = setting.$imgs.index($(this));
+			setting.index_next = setting.index_current + 1;
+			setting.index_prev = setting.index_current - 1;
+
+			//	alert(setting.index_next);//这个有值。
+
+			//	alert($imgs[setting.index_next]==null);//这个是true
+
+			if ($imgs[setting.index_next] == null) {
+				setting.nextImgSrc = null;
+				setting.prevImgSrc = $imgs[setting.index_prev].src;
+				setting.last_img = true;
+			} else {
+				setting.last_img = false;
 			}
-			if($imgs[setting.index_prev]==null){
-				setting.prevImgSrc=null;
-				setting.nextImgSrc=$imgs[setting.index_next].src;
+			if ($imgs[setting.index_prev] == null) {
+				setting.prevImgSrc = null;
+				setting.nextImgSrc = $imgs[setting.index_next].src;
+				setting.first_img = true;
+			} else {
+				setting.first_img = false;
 			}
-			
-			
+
 			//console.log($imgs[setting.index_next]);//获取img
-		//	console.log($imgs[setting.index_next].src);
-			
+			//	console.log($imgs[setting.index_next].src);
+
 			//setting.nextImgSrc=$imgs[setting.index_next].src;
-			//setting.prevImgSrc=$imgs[setting.index_prev].src;		
+			//setting.prevImgSrc=$imgs[setting.index_prev].src;
 			//console.log(111);
-			
-			
+
 			var imgs = $(".click_img");
 
 			//加入图片层
@@ -89,20 +96,52 @@
 		};
 
 		function page(e) {
+
+			//点击下一页
 			if (($(e.target).hasClass("img_next"))) {
 				//$("#imgzoom_zoom").attr("src", setting.nextImgSrc);
-				$("#imgzoom_zoom").attr("src",setting.nextImgSrc);
-				setting.prevImgSrc=setting.imgSrc;
-				setting.index_next=setting.index_next+1;
-				setting.index_prev=setting.index_current;
-			 
+				if (setting.last_img) {
+					alert("已经是最后一张图片");
+					return;
+				}
+
+				$("#imgzoom_zoom").attr("src", setting.nextImgSrc);
+				setting.nextImgSrc = (setting.index_next + 1) == setting.img_num ? null : setting.$imgs[setting.index_next + 1].src;
+				setting.imgSrc = setting.$imgs[setting.index_next].src;
+				setting.prevImgSrc = setting.$imgs[setting.index_prev + 1].src;
+				setting.index_next = setting.index_next + 1;
+				setting.index_prev = setting.index_current;
+				setting.index_current = setting.index_next - 1;
+				if (setting.$imgs[setting.index_next] == null) {
+					setting.last_img = true;
+				}
+				if (setting.$imgs[setting.index_prev] != null && setting.first_img == true) {
+					setting.first_img = false;
+				}
+
 			}
-			 
+
+			//点击上一页
 			if (($(e.target).hasClass("img_prev"))) {
-				$("#imgzoom_zoom").attr("src",setting.prevImgSrc);
-				setting.prevImgSrc=setting.imgSrc;
-				setting.index_next=setting.index_current;
-				setting.index_prev=setting.index_prev+1;
+				if (setting.first_img) {
+					alert("前面没有了");
+					return;
+				}
+
+				$("#imgzoom_zoom").attr("src", setting.prevImgSrc);
+				setting.prevImgSrc = (setting.index_prev - 1) == -1 ? null : setting.$imgs[setting.index_prev - 1].src;
+				setting.imgSrc = setting.$imgs[setting.index_prev].src;
+				setting.nextImgSrc = setting.$imgs[setting.index_next - 1].src;
+				setting.index_next = setting.index_current;
+				setting.index_prev = setting.index_prev - 1;
+				setting.index_current = setting.index_prev + 1;
+
+				if (setting.$imgs[setting.index_prev] == null) {
+					setting.first_img = true;
+				}
+				if (setting.$imgs[setting.index_next] != null && setting.last_img == true) {
+					setting.last_img = false;
+				}
 			}
 
 		};
@@ -110,7 +149,7 @@
 		//如果点击了图片区域以外， 就会去掉图片显示。
 		$("body").click(function(e) {
 			console.log("bodyclick" + e.target + "1");
-			
+
 			//如果是分页操作，不执行其它代码。
 			if ($(e.target).hasClass("img_page")) {
 				e.preventDefault();
