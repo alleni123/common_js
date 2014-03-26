@@ -1,7 +1,18 @@
 (function($) {
 
 	$.fn.imgzoom = function(opts) {
-
+		
+		//alert($(window).width());
+		 
+		//alert($(window).height());
+		
+		
+		
+		
+		
+		
+		
+		
 		var setting = $.extend({
 			imgSelector : "#click_img",
 			imgSrc : "", //显示在前面的图片src
@@ -15,7 +26,8 @@
 			index_prev : "",
 			first_img : false, //测试代码， 用于分辨是否是第一个图片和最后一个图片
 			last_img : false,
-			img_num : "" //图片总数
+			img_num : "", //图片总数
+			zoom_left:"",
 		}, opts || {});
 
 		var selector = $(this).selector;
@@ -25,6 +37,20 @@
 
 		$(setting.imgSelector).on("click", initZoom);
 		function initZoom(e) {
+			
+			
+			//根据图片宽度和浏览器显示宽度来计算一下图片到左边的距离left.
+		var w_width=$(window).width(); //1732
+		var img_w=$(this).attr("w");  //765
+		var img_left=w_width/2-img_w/2;
+			//alert(img_left);
+			setting.zoom_left=img_left;
+			
+			
+			
+			
+			
+			
 			console.log($(".click_img"));
 			var $imgs = $(".click_img");
 
@@ -79,7 +105,8 @@
 				imgWidth : $(this).attr("w"),
 				imgHeight : $(this).attr("h"),
 				nextImgSrc : $(this).next().attr("src"),
-				prevImgSrc : $(this).prev().attr("src")
+				prevImgSrc : $(this).prev().attr("src"),
+				left:img_left
 			});
 			$("#imgzoom").drags();
 
@@ -118,6 +145,14 @@
 				if (setting.$imgs[setting.index_prev] != null && setting.first_img == true) {
 					setting.first_img = false;
 				}
+				console.log(setting.$imgs[0]);
+				//http://www.javascriptkit.com/dhtmltutors/domattribute.shtml  -> dom getAttribute
+				console.log(setting.$imgs[setting.index_current].getAttribute("w"));
+				console.log(setting.zoom_left);
+					var img_w=(setting.$imgs[setting.index_current].getAttribute("w"));
+					console.log(img_w);
+					console.log("2= "+($(window).width()/2-img_w/2));
+				$("#imgzoom").css("left",($(window).width()/2-img_w/2)+"px");
 
 			}
 
@@ -142,6 +177,10 @@
 				if (setting.$imgs[setting.index_next] != null && setting.last_img == true) {
 					setting.last_img = false;
 				}
+				var img_w=(setting.$imgs[setting.index_current].getAttribute("w"));
+				console.log(img_w);
+				console.log("2= "+($(window).width()/2-img_w/2));
+				$("#imgzoom").css("left",($(window).width()/2-img_w/2)+"px");
 			}
 
 		};
@@ -186,23 +225,26 @@
 	};
 
 	$.fn.addImgzoom = function(opts) {
-
+	
 		var setting = $.extend({
 			imgPath : "#123",
 			imgSrc : "",
 			imgWidth : "",
 			imgHeight : "",
-			zoomParent : "#appendParent"
+			zoomParent : "#appendParent",
+			left: "",
+			top:"",
 		}, opts || {});
 		//alert("src= "+setting.imgSrc);
-
+		//alert("imgleft= "+setting.left);
 		var imgzoom = document.createElement("div");
 		imgzoom.id = "imgzoom";
 		imgzoom.style.position = "fixed";
 		imgzoom.style.zIndex = 501;
 		imgzoom.style.cursor = "move";
 		imgzoom.style.top = "100px";
-		imgzoom.style.left = "500px";
+		//imgzoom.style.left = "500px";
+		imgzoom.style.left=setting.left+"px";
 		imgzoom.style.display = "none";
 
 		//这里是添加imgzoom div的地方。
