@@ -1,20 +1,9 @@
 (function($) {
 
 	$.fn.imgzoom = function(opts) {
-		
-		//alert($(window).width());
-		 
-		//alert($(window).height());
-		
-		
-		
-		
-		
-		
-		
-		
+
 		var setting = $.extend({
-			imgSelector : "#click_img",
+			imgSelector : ".click_img",
 			imgSrc : "", //显示在前面的图片src
 			next : ".img_next",
 			img_page : ".img_page", //上一页和下一页点击区域的class
@@ -27,7 +16,7 @@
 			first_img : false, //测试代码， 用于分辨是否是第一个图片和最后一个图片
 			last_img : false,
 			img_num : "", //图片总数
-			zoom_left:"",
+			zoom_left : "",
 		}, opts || {});
 
 		var selector = $(this).selector;
@@ -37,32 +26,24 @@
 
 		$(setting.imgSelector).on("click", initZoom);
 		function initZoom(e) {
-			
-			
+
 			//根据图片宽度和浏览器显示宽度来计算一下图片到左边的距离left.
-		var w_width=$(window).width(); //1732
-		var img_w=$(this).attr("w");  //765
-		var img_left=w_width/2-img_w/2;
+			var w_width = $(window).width();
+			//1732
+			var img_w = $(this).attr("w");
+			//765
+			var img_left = w_width / 2 - img_w / 2;
 			//alert(img_left);
-			setting.zoom_left=img_left;
-			
-			
-			
-			
-			
-			
-			console.log($(".click_img"));
-			var $imgs = $(".click_img");
+			setting.zoom_left = img_left;
+
+			 
+			//var $imgs = $(".click_img");
+			var $imgs=$(setting.imgSelector);
 
 			setting.$imgs = $imgs;
 			setting.img_num = $imgs.length;
 
-			console.log($(this).next());
 
-			//	alert(setting.$imgs.index($(this)));
-			//	alert(setting.$imgs.index($(this).next()));
-			console.log($(this).prev().attr("src"));
-			console.log($(this).next().attr("src"));
 			setting.imgSrc = $(this).attr("src");
 			setting.nextImgSrc = $(this).next().attr("src");
 			setting.prevImgSrc = $(this).prev().attr("src");
@@ -96,7 +77,7 @@
 			//setting.prevImgSrc=$imgs[setting.index_prev].src;
 			//console.log(111);
 
-			var imgs = $(".click_img");
+			 
 
 			//加入图片层
 			$("#appendParent").addImgzoom({
@@ -106,7 +87,7 @@
 				imgHeight : $(this).attr("h"),
 				nextImgSrc : $(this).next().attr("src"),
 				prevImgSrc : $(this).prev().attr("src"),
-				left:img_left
+				left : img_left
 			});
 			$("#imgzoom").drags();
 
@@ -145,14 +126,13 @@
 				if (setting.$imgs[setting.index_prev] != null && setting.first_img == true) {
 					setting.first_img = false;
 				}
-				console.log(setting.$imgs[0]);
+			 
 				//http://www.javascriptkit.com/dhtmltutors/domattribute.shtml  -> dom getAttribute
-				console.log(setting.$imgs[setting.index_current].getAttribute("w"));
-				console.log(setting.zoom_left);
-					var img_w=(setting.$imgs[setting.index_current].getAttribute("w"));
-					console.log(img_w);
-					console.log("2= "+($(window).width()/2-img_w/2));
-				$("#imgzoom").css("left",($(window).width()/2-img_w/2)+"px");
+				//console.log(setting.$imgs[setting.index_current].getAttribute("w"));
+				//console.log(setting.zoom_left);
+				var img_w = (setting.$imgs[setting.index_current].getAttribute("w"));
+				 
+				$("#imgzoom").css("left", ($(window).width() / 2 - img_w / 2) + "px");
 
 			}
 
@@ -177,18 +157,15 @@
 				if (setting.$imgs[setting.index_next] != null && setting.last_img == true) {
 					setting.last_img = false;
 				}
-				var img_w=(setting.$imgs[setting.index_current].getAttribute("w"));
-				console.log(img_w);
-				console.log("2= "+($(window).width()/2-img_w/2));
-				$("#imgzoom").css("left",($(window).width()/2-img_w/2)+"px");
+				var img_w = (setting.$imgs[setting.index_current].getAttribute("w"));
+				 
+				$("#imgzoom").css("left", ($(window).width() / 2 - img_w / 2) + "px");
 			}
 
 		};
 
 		//如果点击了图片区域以外， 就会去掉图片显示。
 		$("body").click(function(e) {
-			console.log("bodyclick" + e.target + "1");
-
 			//如果是分页操作，不执行其它代码。
 			if ($(e.target).hasClass("img_page")) {
 				e.preventDefault();
@@ -219,21 +196,21 @@
 				$("#imgzoom").remove();
 				e.preventDefault();
 			}
-			e.preventDefault();
+			//e.preventDefault();
 		});
 
 	};
 
 	$.fn.addImgzoom = function(opts) {
-	
+
 		var setting = $.extend({
 			imgPath : "#123",
 			imgSrc : "",
 			imgWidth : "",
 			imgHeight : "",
 			zoomParent : "#appendParent",
-			left: "",
-			top:"",
+			left : "",
+			top : "",
 		}, opts || {});
 		//alert("src= "+setting.imgSrc);
 		//alert("imgleft= "+setting.left);
@@ -244,7 +221,7 @@
 		imgzoom.style.cursor = "move";
 		imgzoom.style.top = "100px";
 		//imgzoom.style.left = "500px";
-		imgzoom.style.left=setting.left+"px";
+		imgzoom.style.left = setting.left + "px";
 		imgzoom.style.display = "none";
 
 		//这里是添加imgzoom div的地方。
